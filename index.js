@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Define the name of the input file.
-const inputFile = 'book_with_noise.txt';
+const inputFile = 'book.txt';
 
 // The regular expression to match the date and time string.
 // It looks for a pattern like "2025-09-01T18:41:13.175633843Z [inf]  " at the beginning of each line.
