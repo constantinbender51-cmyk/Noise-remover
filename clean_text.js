@@ -54,7 +54,7 @@ app.get('/', (req, res) => {
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Cleaned Book Text</title>
+                <title>The Architects of Silence</title>
                 <link rel="preconnect" href="https://fonts.googleapis.com">
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
                 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
@@ -84,7 +84,7 @@ app.get('/', (req, res) => {
                 </style>
             </head>
             <body>
-                <h1>Cleaned Book Text</h1>
+                <h1>The Architects of Silence</h1>
                 <pre>${cleanedText}</pre>
             </body>
             </html>
