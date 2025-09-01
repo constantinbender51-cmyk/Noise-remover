@@ -1,0 +1,16 @@
+{
+"name": "date-remover",
+"version": "1.0.0",
+"description": "A Node.js script to remove date and timestamp noise from a book text file.",
+"main": "clean_text.js",
+"scripts": {
+"start": "node clean_text.js"
+},
+"keywords": [
+"nodejs",
+"text-processing",
+"cleaner"
+],
+"author": "Your Name",
+"license": "ISC"
+}
