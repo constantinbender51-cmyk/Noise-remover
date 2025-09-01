@@ -17,7 +17,8 @@ const dateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z\s+\[inf\]\s+/gm;
 const ofCourseRegex = /^Of course\. Here is.*?[\r\n]+/gm;
 
 // The specific string that marks the beginning of the actual book content.
-const bookStartMarker = "The dust had a particular taste here, a metallic grit that settled on the tongue and clung to the back of the throat.";
+const architectsBookStartMarker = "The dust had a particular taste here, a metallic grit that settled on the tongue and clung to the back of the throat.";
+const stillnessBookStartMarker = "The sun did not so much rise over";
 
 // Define the route for "The Architects of Silence" under the /architects/ directory.
 app.get('/architects/', (req, res) => {
@@ -35,7 +36,7 @@ app.get('/architects/', (req, res) => {
         cleanedText = cleanedText.replace(dateRegex, '');
 
         // Step 2: Find the true start of the book and discard everything before it.
-        const startIndex = cleanedText.indexOf(bookStartMarker);
+        const startIndex = cleanedText.indexOf(architectsBookStartMarker);
         if (startIndex !== -1) {
             cleanedText = cleanedText.substring(startIndex);
         }
@@ -103,6 +104,20 @@ app.get('/stillness/', (req, res) => {
             return res.status(500).send("Error reading the stillness book file.");
         }
 
+        let cleanedText = data;
+        
+        // Remove all date and timestamp prints.
+        cleanedText = cleanedText.replace(dateRegex, '');
+
+        // Find the true start of the book and discard everything before it.
+        const startIndex = cleanedText.indexOf(stillnessBookStartMarker);
+        if (startIndex !== -1) {
+            cleanedText = cleanedText.substring(startIndex);
+        }
+
+        // Remove all apostrophes.
+        cleanedText = cleanedText.replaceAll("'", '');
+        
         // Wrap the raw text in basic HTML for display.
         const html = `
             <!DOCTYPE html>
@@ -141,7 +156,7 @@ app.get('/stillness/', (req, res) => {
             </head>
             <body>
                 <h1>The Stillness Valley</h1>
-                <pre>${data}</pre>
+                <pre>${cleanedText}</pre>
             </body>
             </html>
         `;
