@@ -7,23 +7,22 @@ const app = express();
 // Use the PORT environment variable provided by Railway, or default to 3000 for local development.
 const PORT = process.env.PORT || 3000;
 
-// The name of the input file.
-const inputFile = 'book_with_noise.txt';
+// The name of the input file for the first book.
+const architectsFile = 'book_with_noise.txt';
 
 // The regular expression to match the date and time string at the start of a line.
 const dateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z\s+\[inf\]\s+/gm;
 
 // The regular expression to match and remove the "Of course..." lines.
-// It looks for a line starting with "Of course." and removes the entire line.
 const ofCourseRegex = /^Of course\. Here is.*?[\r\n]+/gm;
 
 // The specific string that marks the beginning of the actual book content.
 const bookStartMarker = "The dust had a particular taste here, a metallic grit that settled on the tongue and clung to the back of the throat.";
 
-// Define the main route to serve the cleaned text.
-app.get('/', (req, res) => {
+// Define the route for "The Architects of Silence" under the /architects/ directory.
+app.get('/architects/', (req, res) => {
     // Read the content of the input file.
-    fs.readFile(path.join(__dirname, inputFile), 'utf8', (err, data) => {
+    fs.readFile(path.join(__dirname, architectsFile), 'utf8', (err, data) => {
         if (err) {
             console.error(`Error reading the file: ${err.message}`);
             // Send a 500 status code and error message if the file can't be read.
@@ -93,6 +92,122 @@ app.get('/', (req, res) => {
         // Send the HTML response to the client.
         res.send(html);
     });
+});
+
+// Define the route for "The Stillness Valley" under the /stillness/ directory.
+app.get('/stillness/', (req, res) => {
+    // Read the content of the new book file.
+    fs.readFile(path.join(__dirname, 'stillness.txt'), 'utf8', (err, data) => {
+        if (err) {
+            console.error(`Error reading the stillness file: ${err.message}`);
+            return res.status(500).send("Error reading the stillness book file.");
+        }
+
+        // Wrap the raw text in basic HTML for display.
+        const html = `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>The Stillness Valley</title>
+                <link rel="preconnect" href="https://fonts.googleapis.com">
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+                <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+                <style>
+                    body {
+                        font-family: 'Inter', sans-serif;
+                        line-height: 1.6;
+                        color: #333;
+                        max-width: 800px;
+                        margin: 2rem auto;
+                        padding: 0 1rem;
+                        background-color: #f4f4f4;
+                    }
+                    h1 {
+                        font-weight: 700;
+                        color: #1a1a1a;
+                        text-align: center;
+                    }
+                    pre {
+                        background-color: #fff;
+                        padding: 1.5rem;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                        white-space: pre-wrap;
+                        font-size: 1rem;
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>The Stillness Valley</h1>
+                <pre>${data}</pre>
+            </body>
+            </html>
+        `;
+        res.send(html);
+    });
+});
+
+// A simple landing page to direct users to the books.
+app.get('/', (req, res) => {
+    res.send(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Book Server</title>
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+            <style>
+                body {
+                    font-family: 'Inter', sans-serif;
+                    line-height: 1.6;
+                    color: #333;
+                    max-width: 800px;
+                    margin: 2rem auto;
+                    padding: 0 1rem;
+                    background-color: #f4f4f4;
+                    text-align: center;
+                }
+                h1 {
+                    font-weight: 700;
+                    color: #1a1a1a;
+                }
+                ul {
+                    list-style-type: none;
+                    padding: 0;
+                }
+                li {
+                    margin: 1rem 0;
+                }
+                a {
+                    display: inline-block;
+                    padding: 0.75rem 1.5rem;
+                    background-color: #007bff;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 8px;
+                    font-weight: bold;
+                    transition: background-color 0.3s;
+                }
+                a:hover {
+                    background-color: #0056b3;
+                }
+            </style>
+        </head>
+        <body>
+            <h1>Welcome to the Book Server</h1>
+            <p>Please select a book to read:</p>
+            <ul>
+                <li><a href="/architects/">The Architects of Silence</a></li>
+                <li><a href="/stillness/">The Stillness Valley</a></li>
+            </ul>
+        </body>
+        </html>
+    `);
 });
 
 // Start the server.
