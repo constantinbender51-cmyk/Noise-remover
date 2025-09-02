@@ -371,6 +371,17 @@ app.get('/', (req, res) => {
     `);
 });
 
+// A new route to serve the audio file.
+app.get('/wisdom.mp3', (req, res) => {
+    const filePath = path.join(__dirname, 'wisdom.mp3');
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            console.error(`Error sending the audio file: ${err.message}`);
+            res.status(500).send("Error serving audio file.");
+        }
+    });
+});
+
 // Start the server.
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
