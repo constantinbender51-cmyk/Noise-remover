@@ -298,6 +298,7 @@ app.get('/wisdom/', (req, res) => {
             </head>
             <body>
                 <h1>The Unheeded Oracle: A Dialogue on Wisdom</h1>
+                <audio controls src="/wisdom.mp3"></audio>
                 <pre>${cleanedText}</pre>
             </body>
             </html>
