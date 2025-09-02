@@ -248,6 +248,9 @@ app.get('/wisdom/', (req, res) => {
         // Remove all date and timestamp prints.
         cleanedText = cleanedText.replace(dateRegex, '');
 
+        // Remove the conversational segments.
+        cleanedText = cleanedText.replace(ofCourseRegex, '');
+
         // Find the true start of the book and discard everything before it.
         const startIndex = cleanedText.indexOf(wisdomBookStartMarker);
         if (startIndex !== -1) {
